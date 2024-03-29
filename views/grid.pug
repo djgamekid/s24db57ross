@@ -1,0 +1,30 @@
+extends layout 
+
+block content 
+    h1= title
+  
+    p Rows = #{query.rows}
+    p Columns = #{query.cols}
+
+    - 
+        var rows = Number(query.rows);
+        var columns = Number(query.cols);
+        function findMin(num1, num2) {
+            return Math.min(num1, num2) + 1;
+        }
+
+    if (!Number.isInteger(rows) || !Number.isInteger(columns))
+        p The values are not integers or one of the values isn't an integer.
+    else if (rows < 3 || rows > 13)
+        p The number of rows are out of range
+    else if (columns < 3 || columns > 13)
+        p The number of columns are out of range
+    else 
+        table#outer 
+            - for(let i=0; i<rows; i++) {
+                tr#middle
+                    - for(let j=0; j<columns; j++) {
+                        td= findMin(i, j)
+                    - } 
+            - }  
+    -
