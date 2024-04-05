@@ -3,12 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var rectangle = require('./models/rectangle');
+const { default: mongoose } = require('mongoose');
+require('dotenv').config();
+const connectionString = process.env.MONGO_CON;
+mongoose.connect(connectionString);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var rectangleRouter = require('./routes/rectangle');
 var gridRouter = require("./routes/grid");
 var pickRouter = require("./routes/pick");
+var resourceRouter = require("./routes/resource");
 
 var app = express();
 
@@ -27,14 +33,60 @@ app.use('/users', usersRouter);
 app.use('/rectangle', rectangleRouter);
 app.use("/grid", gridRouter);
 app.use("/pick", pickRouter);
+app.use('/resource', resourceRouter);
+
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once("open", function () {
+  console.log("Connection to DB succeeded")
+})
+
+async function recreateDB() {
+  // Delete everything
+  await rectangle.deleteMany();
+  let instance1 = new
+    rectangle({
+      width: 15.0, height: 8.0
+    });
+  instance1.save().then(doc => {
+    console.log("First object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  let instance2 = new
+    rectangle({
+      width: 100.0, height: 200.0
+    });
+  instance2.save().then(doc => {
+    console.log("Second object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  let instance3 = new
+    rectangle({
+      width: 4.0, height: 2.0
+    });
+  instance3.save().then(doc => {
+    console.log("Third object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+}
+let reseed = true;
+if (reseed) { recreateDB(); }
+
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
