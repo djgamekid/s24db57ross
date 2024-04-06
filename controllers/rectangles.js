@@ -37,7 +37,7 @@ res.send(`{"error": document for id ${req.params.id} not found`);
 }
 };
 
-// Handle Costume create on POST.
+// Handle Rectangle create on POST.
 exports.rectangle_create_post = async function(req, res) {
 console.log(req.body)
 let document = new Rectangle();
@@ -61,6 +61,21 @@ exports.rectangle_delete = function(req, res) {
 res.send('NOT IMPLEMENTED: Rectangle delete DELETE ' + req.params.id);
 };
 // Handle Rectangle update form on PUT.
-exports.rectangle_update_put = function(req, res) {
-res.send('NOT IMPLEMENTED: Rectangle update PUT' + req.params.id);
+exports.rectangle_update_put = async function(req, res) {
+console.log(`update on id ${req.params.id} with body
+${JSON.stringify(req.body)}`)
+try {
+let toUpdate = await Rectangle.findById( req.params.id)
+// Do updates of properties
+if(req.body.width)
+toUpdate.width = req.body.width;
+if(req.body.height) toUpdate.height = req.body.height;
+let result = await toUpdate.save();
+console.log("Sucess " + result)
+res.send(result)
+} catch (err) {
+res.status(500)
+res.send(`{"error": ${err}: Update for id ${req.params.id}
+failed`);
+}
 };
