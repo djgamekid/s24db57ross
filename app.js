@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var rectangle = require('./models/rectangle');
+var Rectangle = require('./models/rectangle');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 const connectionString = process.env.MONGO_CON;
@@ -44,9 +44,9 @@ db.once("open", function () {
 
 async function recreateDB() {
   // Delete everything
-  await rectangle.deleteMany();
+  await Rectangle.deleteMany();
   let instance1 = new
-    rectangle({
+    Rectangle({
       width: 15.0, height: 8.0
     });
   instance1.save().then(doc => {
@@ -56,7 +56,7 @@ async function recreateDB() {
     console.error(err)
   });
   let instance2 = new
-    rectangle({
+    Rectangle({
       width: 100.0, height: 200.0
     });
   instance2.save().then(doc => {
@@ -66,7 +66,7 @@ async function recreateDB() {
     console.error(err)
   });
   let instance3 = new
-    rectangle({
+    Rectangle({
       width: 4.0, height: 2.0
     });
   instance3.save().then(doc => {

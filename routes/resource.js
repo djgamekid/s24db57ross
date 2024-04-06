@@ -18,12 +18,3 @@ router.get('/rectangles/:id', rectangle_controller.rectangle_detail);
 // GET request for list of all Rectangle items.
 router.get('/rectangles', rectangle_controller.rectangle_list);
 module.exports = router;
-// API for our resources
-exports.api = function(req, res) {
-res.write('[');
-res.write('{"resource":"rectangles", ');
-res.write(' "verbs":["GET","PUT", "DELETE"] ');
-res.write('}');
-res.write(']')
-res.send();
-};
