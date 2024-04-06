@@ -1,8 +1,16 @@
 var Rectangle = require('../models/rectangle');
 // List of all rectangles
-exports.rectangle_list = function(req, res) {
-res.send('NOT IMPLEMENTED: Rectangle list');
-};
+exports.rectangle_list = async function(req, res) {
+    try{
+    theRectangles = await Rectangle.find();
+    res.send(theRectangles);
+    }
+    catch(err){
+    res.status(500);
+    res.send(`{"error": ${err}}`);
+    }
+    };
+    
 // for a specific Rectangle.
 exports.rectangle_detail = function(req, res) {
 res.send('NOT IMPLEMENTED: Rectangle detail: ' + req.params.id);
