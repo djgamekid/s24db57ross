@@ -10,6 +10,20 @@ exports.rectangle_list = async function(req, res) {
     res.send(`{"error": ${err}}`);
     }
     };
+// // VIEWS
+// Handle a show all view
+exports.rectangle_view_all_Page = async function(req, res) {
+    try{
+    theRectangles = await Rectangle.find();
+    res.render('rectangle', { title: 'Rectangle Search Results', results: theRectangles });
+    }
+    catch(err){
+    res.status(500);
+    res.send(`{"error": ${err}}`);
+    }
+    };
+
+        
     
 // for a specific Rectangle.
 exports.rectangle_detail = function(req, res) {
