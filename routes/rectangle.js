@@ -6,6 +6,9 @@ var router = express.Router();
 router.get('/', rectangle_controllers.rectangle_view_all_Page);
 
 /* GET detail costume page */
-router.get('/detail', rectangle_controllers.rectangle_view_one_Page)
+router.get('/detail', rectangle_controllers.rectangle_view_one_Page);
+
+/* GET create costume page */
+router.get('/create', rectangle_controllers.rectangle_create_Page);
 
 module.exports = router;
