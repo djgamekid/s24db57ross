@@ -14,5 +14,7 @@ router.get('/create', rectangle_controllers.rectangle_create_Page);
 /* GET create update page */
 router.get('/update', rectangle_controllers.rectangle_update_Page);
 
+/* GET delete rectangle page */
+router.get('/delete', rectangle_controllers.rectangle_delete_Page);
 
 module.exports = router;

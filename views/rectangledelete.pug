@@ -1,0 +1,47 @@
+extends layout
+block content
+    h1= title
+    
+    if (toShow == null)
+        h2 No instance to delete
+    else
+        - let rectangleid = toShow._id
+        - let rectanglewidth = toShow.width
+        - let rectangleheight = toShow.height
+
+        - let actionid = "/resource/rectangles/" + rectangleid
+        script let actionid = "#{actionid}"
+        div
+            div.row
+            div(class='rectangleAttr mr-3') Rectangle ID is:
+            div #{rectangleid}
+            div.row
+            div(class='rectangleAttr mr-3') Rectangle width is:
+            div #{rectanglewidth}
+            div.row
+            div(class='rectangleAttr mr-3') Rectangle height is:
+            div #{rectangleheight}
+        button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+        button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+        script.
+            function cancel() {
+            // Go back to the home page for the rectangle collection
+            window.location.href='/rectangles'
+            }
+        script.
+            function deleteOnid() {
+            console.log("starting delete")
+            // delete first
+            fetch(actionid, {
+            method: 'DELETE' // Don't need a body for the delete
+            }).then((resp) => {
+            return resp.json(); // or resp.text() or whatever the server sends
+            }).then((body) => {
+            alert("Delete succeded")
+            window.location.href='/rectangles'
+            // TODO handle body
+            }).catch((error) => {
+            // TODO handle error
+            alert("Delete failed " + error )
+            });
+            }

@@ -57,13 +57,27 @@ exports.rectangle_update_Page = async function(req, res) {
     console.log("update view for item "+req.query.id)
     try{
     let result = await Rectangle.findById(req.query.id)
-    res.render('rectangleupdate', { title: 'rectangle Update', toShow: result });
+    res.render('rectangleupdate', { title: 'Rectangle Update', toShow: result });
     }
     catch(err){
     res.status(500)
     res.send(`{'error': '${err}'}`);
     }
+    };
+
+// Handle a delete one view with id from query
+exports.rectangle_delete_Page = async function(req, res) {
+    console.log("Delete view for id " + req.query.id)
+    try{
+    result = await Rectangle.findById(req.query.id)
+    res.render('rectangledelete', { title: 'Rectangle Delete', toShow:
+    result });
     }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };
     
     
 // for a specific Rectangle.
