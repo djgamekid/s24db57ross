@@ -1,0 +1,16 @@
+extends layout
+block content
+    h1= title
+    - let rectangleid = toShow._id
+    - let rectanglewidth = toShow.width
+    - let rectangleheight = toShow.height
+    div
+    div.row
+    div(class='rectangleAttr mr-3') Rectangle ID is:
+    div #{rectangleid}
+    div.row
+    div(class='rectangleAttr mr-3') Rectangle Width is:
+    div #{rectanglewidth}
+    div.row
+    div(class='rectangleAttr mr-3') Rectangle Height is:
+    div #{rectangleheight}

@@ -6,3 +6,9 @@ body {
 a {
   color: #00B7FF;
 }
+
+.rectangleAttr {
+  background-color: green;
+  width: 100px;
+  }
+  
