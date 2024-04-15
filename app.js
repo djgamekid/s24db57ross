@@ -1,13 +1,47 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var app = express();
+
 var Rectangle = require('./models/rectangle');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 const connectionString = process.env.MONGO_CON;
 mongoose.connect(connectionString);
+
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    Account.findOne({ username: username })
+      .then(function (user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      })
+      .catch(function (err) {
+        return done(err)
+      })
+  })
+)
+
+
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -16,7 +50,11 @@ var gridRouter = require("./routes/grid");
 var pickRouter = require("./routes/pick");
 var resourceRouter = require("./routes/resource");
 
-var app = express();
+//The Account model
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
