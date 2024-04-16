@@ -9,12 +9,13 @@ block content
   div(class="container-fluid")
     div(class="row m-1")
     each rectangle, index in items 
-      - let destination = `dispatch("rectangles/update?id=${items._id}")`
+      - let destination = `dispatch("/rectangle/update?id=${items._id}")`
       div(class="col-sm-2", onclick=`buy(${index})`) #{rectangle.width} #{rectangle.height}
         button.btn( class="btn-primary ml-1", onclick= destination) Update
 
   script.
     function dispatch(path){
+      console.log(path)
       window.location.href=path
     }
 
