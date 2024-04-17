@@ -11,7 +11,10 @@ block content
     each rectangle, index in items 
       - let destination = `dispatch("/rectangle/update?id=${items._id}")`
       div(class="col-sm-2", onclick=`buy(${index})`) #{rectangle.width} #{rectangle.height}
-        button.btn( class="btn-primary ml-1", onclick= destination) Update
+        div(class="d-flex flex-row gap-3")
+          a(class="btn btn-primary" href=`/rectangle`) Collection
+          a(class="btn btn-warning" href=`/rectangle/update/?id=${items._id}`) Update
+          a(class="btn btn-danger" href=`/rectangle/delete/?id=${items._id}`) Delete
 
   script.
     function dispatch(path){
